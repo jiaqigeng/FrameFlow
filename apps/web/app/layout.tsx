@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Navigation } from "./navigation";
+import { OpeningSequence } from "./opening-sequence";
 import type { ReactNode } from "react";
 import "./globals.css";
 
@@ -12,6 +13,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
+        <OpeningSequence />
         <header className="masthead">
           <Navigation />
         </header>

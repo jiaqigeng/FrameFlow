@@ -25,7 +25,7 @@ Run `pnpm typecheck` and `pnpm build` to check the project. Use `pnpm start` to 
 
 ## Sample film
 
-**Caminandes: Llamigos** is a 2016 animated short from Blender Foundation, directed by Pablo Vazquez, with music by Torin Borrowdale and sound design by Sander Houtman. FrameFlow uses 0:49.875–1:41.792 of the film, re-encoded at 720p with brief audio fades at the cut points. The poster, scene thumbnails, and demo preview use frames from this excerpt. [Original film](https://www.youtube.com/watch?v=SkVqJ1SGeL0) · [Blender’s source MP4](https://video.blender.org/download/web-videos/23f3ef79-15dc-44c5-aa45-cf92e78a4509-1080.mp4) · [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/)
+**Caminandes: Llamigos** is a 2016 animated short from Blender Foundation, directed by Pablo Vazquez, with music by Torin Borrowdale and sound design by Sander Houtman. FrameFlow uses 0:49.875–1:41.792 of the film, re-encoded at 720p with brief audio fades at the cut points. The opening animation, poster, scene thumbnails, and demo preview use frames from this excerpt. [Original film](https://www.youtube.com/watch?v=SkVqJ1SGeL0) · [Blender’s source MP4](https://video.blender.org/download/web-videos/23f3ef79-15dc-44c5-aa45-cf92e78a4509-1080.mp4) · [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/)
 
 ## Planned features
 
