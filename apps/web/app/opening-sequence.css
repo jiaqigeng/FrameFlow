@@ -4,33 +4,92 @@
   display: grid;
   place-items: center;
   min-height: 100svh;
-  padding: 2.5rem 1.25rem;
+  padding: clamp(1rem, 4vw, 3rem);
   overflow: clip;
-  background: var(--paper);
+  color-scheme: dark;
+  color: #f3f5ee;
+  background: linear-gradient(180deg, #0c1c2566, #10252d51 50%, #06161caa),
+    url("/media/llamigos-landscape.webp") center 56% / cover, #283f43;
   --entry-duration: 2.05s;
+  --brand-rest-height: 1.85rem;
+  --brand-start-scale: 2.1;
+  --brand-start-offset: clamp(2.5rem, 7vw, 5.2rem);
+  --brand-gap: clamp(1rem, 2.4vw, 1.65rem);
 }
 
-.sign-in-form { display: grid; width: min(100%, 20rem); }
-.sign-in-wordmark { display: flex; justify-content: center; align-items: center; gap: .43em; font-size: 1.15rem; font-weight: 700; letter-spacing: -.06em; }
-.sign-in-wordmark .brand-mark { width: 1.42em; height: 1.12em; }
-.sign-in-form h1 { margin-top: .65rem; text-align: center; font-size: 2.15rem; line-height: 1.1; letter-spacing: -.055em; font-weight: 650; }
-.sign-in-form p { max-width: 30ch; margin: .55rem auto 1.3rem; color: var(--muted); font-size: .88rem; line-height: 1.45; text-align: center; }
-.sign-in-form label { margin-bottom: .3rem; font-size: .85rem; font-weight: 600; }
+/* The panel and curtain share a center. Positioning the mark against the panel
+   lets one element travel between both layouts, even as the viewport changes. */
+.entry-panel {
+  --panel-pad: clamp(1.35rem, 4vw, 2.5rem);
+  position: relative;
+  width: min(100%, 26.5rem);
+  padding: calc(var(--panel-pad) + var(--brand-rest-height) + 1.5rem) var(--panel-pad) var(--panel-pad);
+  border: 1px solid #82949269;
+  border-radius: 1.25rem;
+  background: linear-gradient(155deg, #1f3033, #162629 62%, #152226);
+  box-shadow: 0 1.75rem 5rem #06111444, 0 3px 12px #08131830;
+}
+.entry-wordmark {
+  position: absolute;
+  z-index: 3;
+  top: var(--panel-pad);
+  left: 50%;
+  display: flex;
+  width: max-content;
+  height: var(--brand-rest-height);
+  align-items: center;
+  gap: .36em;
+  color: #f3f5ee;
+  font-size: 1.38rem;
+  font-weight: 700;
+  letter-spacing: -.06em;
+  line-height: 1;
+  transform: translate(-50%, 0);
+  pointer-events: none;
+}
+.entry-wordmark .brand-mark { width: 1.29em; height: 1.04em; border-radius: .18em; color: #202720; }
+.entry-wordmark .play-symbol { width: .42em; height: .5em; margin-left: .07em; }
+.sign-in-form { display: grid; }
+.sign-in-form h1 {
+  text-align: center; font-size: clamp(2rem, 4vw, 2.45rem);
+  line-height: 1.1; letter-spacing: -.055em; font-weight: 610;
+}
+.sign-in-form p { margin: .55rem 0 1.65rem; color: #c0cbc8; font-size: .92rem; line-height: 1.5; text-align: center; }
+.entry-field { display: grid; gap: .43rem; }
+.entry-field + .entry-field { margin-top: 1rem; }
+.entry-field label { font-size: .89rem; font-weight: 580; color: #e7eee8; }
 .sign-in-form input {
-  width: 100%; min-height: 2.8rem; margin-bottom: .8rem; padding: .5rem .8rem;
-  border: 1px solid #b7bfb3; border-radius: .38rem; background: #fffefb; color: var(--ink); font-size: 1rem;
+  width: 100%; min-width: 0; min-height: 3rem; padding: .64rem .88rem;
+  border: 1px solid #748581; border-radius: .55rem; background: #132124; color: #f3f5ee;
+  font: inherit; font-size: 1rem;
 }
-.sign-in-form input::placeholder { color: #687266; opacity: 1; }
-.sign-in-form button {
-  margin-top: .25rem; min-height: 2.85rem; border-radius: .38rem;
-  background: var(--ink); color: var(--paper); font-size: .95rem; font-weight: 650; cursor: pointer;
+.sign-in-form input::placeholder { color: #a7b5b0; opacity: 1; }
+.sign-in-page :is(input, button):focus-visible { outline: 3px solid #ffc09c; outline-offset: 3px; }
+.entry-password { position: relative; }
+.entry-password input { padding-right: 4.4rem; }
+.password-toggle {
+  position: absolute; top: 50%; right: .3rem; transform: translateY(-50%);
+  min-width: 3.5rem; min-height: 44px; border-radius: .4rem; color: #d4dfd9;
+  font-size: .83rem; font-weight: 600; cursor: pointer;
 }
-.sign-in-form button:hover { background: #3c443b; }
+.password-toggle:hover { text-decoration: underline; text-underline-offset: .2rem; }
+.entry-submit {
+  display: flex; align-items: center; justify-content: center; gap: .55rem;
+  margin-top: 1.5rem; min-height: 3.1rem; border-radius: .55rem;
+  background: #ff986e; color: #231c17; font-size: .97rem; font-weight: 680; cursor: pointer;
+}
+.entry-submit:hover { background: #ffab88; }
+.entry-submit:active { background: #ff8c5e; }
+.entry-arrow { font-size: 1.15em; line-height: 1; }
+@media (scripting: none) {
+  .password-toggle { display: none; }
+  .entry-password input { padding-right: .88rem; }
+}
 
 .opening-sequence {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   display: none;
   place-items: center;
   width: 100%;
@@ -47,15 +106,22 @@
 }
 
 .sign-in-page[data-phase="playing"] .opening-sequence { display: grid; animation: opening-lift var(--entry-duration) both; }
+.sign-in-page[data-phase="playing"] .entry-wordmark { animation: wordmark-dock var(--entry-duration) both; }
 .sign-in-page[data-phase="playing"] .sign-in-form { animation: sign-in-arrive var(--entry-duration) both; }
 /* The server-rendered entry starts on the reel. If JS is slow, release the form. */
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   .sign-in-page[data-phase="preparing"] .opening-sequence { display: grid; animation: opening-prepare .6s step-end both; }
   .sign-in-page[data-phase="preparing"] .sign-in-form { animation: sign-in-prepare .6s step-end both; }
+  .sign-in-page[data-phase="preparing"] .entry-wordmark { animation: wordmark-prepare .6s step-end both; }
   .sign-in-page[data-phase="preparing"] .opening-stage *,
   .sign-in-page[data-phase="preparing"] .opening-strip::after { animation-play-state: paused; }
 }
-.opening-stage { width: min(42rem, 90%); }
+.opening-stage {
+  position: absolute; left: 50%; top: calc(50% + var(--brand-start-offset));
+  width: min(42rem, calc(100% - 3rem));
+  padding-bottom: calc(var(--brand-gap) + var(--brand-rest-height) * var(--brand-start-scale) / 2);
+  transform: translate(-50%, -100%);
+}
 
 .opening-strip {
   position: relative;
@@ -122,20 +188,6 @@
   clip-path: polygon(0 0, 100% 0, 100% 40%, 50% 100%, 0 40%);
 }
 
-.opening-wordmark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .3em;
-  margin-top: clamp(1.15rem, 3.8vw, 2.1rem);
-  font-size: clamp(2.25rem, 6vw, 3.8rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -.065em;
-}
-
-.opening-wordmark .brand-mark { width: .94em; height: .78em; border-radius: .12em; color: var(--ink); }
-.opening-wordmark .play-symbol { width: .29em; height: .36em; margin-left: .07em; }
 .opening-skip {
   position: absolute;
   right: max(1.25rem, env(safe-area-inset-right));
@@ -159,13 +211,26 @@
 @keyframes opening-scrub { 0% { left: 1%; opacity: 0; } 12% { opacity: 1; } 100% { left: 97%; opacity: 1; } }
 @keyframes opening-prepare { from { visibility: visible; } to { visibility: hidden; } }
 @keyframes sign-in-prepare { from { visibility: hidden; } to { visibility: visible; } }
+@keyframes wordmark-prepare {
+  from { top: calc(50% + var(--brand-start-offset)); transform: translate(-50%, -50%) scale(var(--brand-start-scale)); }
+  to { top: var(--panel-pad); transform: translate(-50%, 0); }
+}
+@keyframes wordmark-dock {
+  0%, 58% {
+    top: calc(50% + var(--brand-start-offset));
+    transform: translate(-50%, -50%) scale(var(--brand-start-scale));
+    animation-timing-function: cubic-bezier(.48,0,.23,1);
+  }
+  92%, 100% { top: var(--panel-pad); transform: translate(-50%, 0); }
+}
 @keyframes opening-lift {
   0%, 58% { transform: translateY(0); animation-timing-function: cubic-bezier(.62,.02,.38,1); }
   83%, 100% { transform: translateY(-101%); }
 }
-@keyframes sign-in-arrive { 0%, 83% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes sign-in-arrive { 0%, 82% { opacity: 0; } 100% { opacity: 1; } }
 
 @media (prefers-reduced-motion: reduce) {
   .sign-in-page[data-phase="playing"] .opening-sequence { display: none; }
-  .sign-in-page[data-phase="playing"] .sign-in-form { animation: none; }
+  .sign-in-page[data-phase="playing"] :is(.sign-in-form, .entry-wordmark) { animation: none; }
 }
+@media (max-width: 32rem) { .sign-in-page { --brand-start-scale: 1.65; } }

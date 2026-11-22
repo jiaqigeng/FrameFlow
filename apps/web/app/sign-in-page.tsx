@@ -8,17 +8,9 @@ import "./opening-sequence.css";
 const sample = films.find((film) => film.slug === "llamigos");
 const introKey = "frameflow.sign-in.intro-seen";
 
-function Brand({ large = false }: { large?: boolean }) {
-  return (
-    <div className={large ? "opening-wordmark" : "sign-in-wordmark"}>
-      <span className="brand-mark" aria-hidden="true"><span className="play-symbol" /></span>
-      FrameFlow
-    </div>
-  );
-}
-
 export function SignInPage() {
   const [phase, setPhase] = useState<"preparing" | "playing" | "ready">("preparing");
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const curtainRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -92,28 +84,50 @@ export function SignInPage() {
 
   return (
     <main className="sign-in-page" data-phase={phase}>
-      <Form
-        action="/dashboard"
-        noValidate
-        autoComplete="off"
-        aria-labelledby="sign-in-title"
-        aria-describedby="demo-access"
-        className="sign-in-form"
-        inert={phase === "playing"}
-        onAnimationEnd={(event) => {
-          if (event.animationName === "sign-in-arrive") setPhase("ready");
-        }}
-      >
-        <Brand />
-        <h1 id="sign-in-title">Sign in</h1>
-        <p id="demo-access">Select Sign in to explore the demo. Both fields are optional.</p>
-        {/* Unnamed inputs are excluded from both native and client-side navigation. */}
-        <label htmlFor="demo-email">Email</label>
-        <input id="demo-email" type="email" placeholder="demo@example.com" />
-        <label htmlFor="demo-password">Password</label>
-        <input id="demo-password" type="password" placeholder="••••••••••" />
-        <button type="submit">Sign in</button>
-      </Form>
+      <div className="entry-panel">
+        <div className="entry-wordmark">
+          <span className="brand-mark" aria-hidden="true"><span className="play-symbol" /></span>
+          FrameFlow
+        </div>
+        <Form
+          action="/dashboard"
+          noValidate
+          autoComplete="off"
+          aria-labelledby="sign-in-title"
+          aria-describedby="demo-access"
+          className="sign-in-form"
+          inert={phase === "playing"}
+          onAnimationEnd={(event) => {
+            if (event.animationName === "sign-in-arrive") setPhase("ready");
+          }}
+        >
+          <h1 id="sign-in-title">Sign in</h1>
+          <p id="demo-access">Leave both fields blank to explore the demo.</p>
+          {/* Unnamed inputs are excluded from both native and client-side navigation. */}
+          <div className="entry-field">
+            <label htmlFor="demo-email">Email</label>
+            <input id="demo-email" type="email" placeholder="you@example.com" autoCapitalize="none" spellCheck={false} />
+          </div>
+          <div className="entry-field">
+            <label htmlFor="demo-password">Password</label>
+            <div className="entry-password">
+              <input id="demo-password" type={passwordVisible ? "text" : "password"} />
+              <button
+                className="password-toggle"
+                type="button"
+                aria-controls="demo-password"
+                aria-label={passwordVisible ? "Hide password" : "Show password"}
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              >
+                {passwordVisible ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+          <button className="entry-submit" type="submit">
+            Sign in <span className="entry-arrow" aria-hidden="true">→</span>
+          </button>
+        </Form>
+      </div>
       {phase !== "ready" && sample && (
         <div className="opening-sequence" ref={curtainRef}>
           <div className="opening-stage" aria-hidden="true">
@@ -126,7 +140,6 @@ export function SignInPage() {
               ))}
               <div className="opening-playhead" />
             </div>
-            <Brand large />
           </div>
           <button type="button" className="opening-skip" onClick={() => setPhase("ready")}>
             Skip intro <span aria-hidden="true">→</span>
