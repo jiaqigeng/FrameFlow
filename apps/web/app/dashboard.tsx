@@ -127,10 +127,23 @@ export default function Dashboard() {
     <main className="page-width dashboard">
       <header className="dashboard-heading">
         <h1>Processing dashboard</h1>
-        <p>Add videos to extract a thumbnail and duration. Your files stay in this browser.</p>
+        <p>Extract thumbnails and durations from your videos.</p>
       </header>
 
       <div className="dashboard-intake">
+        {sample && (
+          <article className="dashboard-sample">
+            <img className="sample-still" src={sample.poster} alt="" width="1280" height="720" />
+            <div className="sample-content">
+              <p className="sample-category">Sample video</p>
+              <h2><Link href={`/watch/${sample.slug}`}>{sample.title}</Link></h2>
+              <p className="sample-meta">{sample.series} · {timestamp(sample.duration)}</p>
+              <button className="sample-process" type="button" disabled={!!adding} onClick={() => void addVideos("sample")}>
+                {adding === "sample" ? "Adding sample…" : "Process sample"} <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </article>
+        )}
         <div
           className={`upload-target${dragging ? " is-dragging" : ""}`}
           onDragOver={(event) => {
@@ -146,6 +159,7 @@ export default function Dashboard() {
         >
           <span className="upload-icon"><UploadIcon /></span>
           <h2>{dragging ? "Drop to add to the queue" : "Drop videos here"}</h2>
+          <p>Add one or more files at a time.</p>
           <input
             type="file" ref={picker} accept="video/*" multiple hidden
             aria-label="Choose video files"
@@ -159,69 +173,68 @@ export default function Dashboard() {
             {adding === "files" ? "Adding videos…" : "Choose videos"}
           </button>
         </div>
-
-        {sample && (
-          <article className="dashboard-sample">
-            <div className="sample-still">
-              <img src={sample.poster} alt="" width="1280" height="720" />
-              <span>{timestamp(sample.duration)}</span>
-            </div>
-            <div className="sample-controls">
-              <div>
-                <p>Sample video</p>
-                <h2><Link href={`/watch/${sample.slug}`}>{sample.title}</Link></h2>
-              </div>
-              <button type="button" disabled={!!adding} onClick={() => void addVideos("sample")}>
-                {adding === "sample" ? "Adding sample…" : "Process sample"} <span aria-hidden="true">→</span>
-              </button>
-            </div>
-          </article>
-        )}
       </div>
 
       {error && <p role="alert" className="dashboard-error">{error}</p>}
 
-      <section className="dashboard-queue" aria-labelledby="queue-title">
+      <section id="processing-queue" className="dashboard-queue" aria-labelledby="queue-title">
         <header className="queue-header">
           <h2 id="queue-title">Processing queue</h2>
           <Link href="/library">View library <span aria-hidden="true">→</span></Link>
         </header>
-        {loading || jobs.length === 0 ? (
-          <div className="queue-empty" role="status">
-            <span className="empty-glyph" aria-hidden="true">
-              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="4.5" width="18" height="15" rx="2" /><path d="M7.5 4.5v15m9-15v15M3 9h4.5M3 15h4.5m9-6H21m-4.5 6H21" />
-              </svg>
-            </span>
-            <div>
+        <div className="queue-surface">
+          <table className="queue-table" aria-labelledby="queue-title">
+            <thead>
+              <tr>
+                <th scope="col">File name</th>
+                <th scope="col">Status</th>
+                <th scope="col" className="job-size">Size</th>
+                <th scope="col" className="actions-heading">Actions</th>
+              </tr>
+            </thead>
+            <tbody aria-live="polite" aria-relevant="additions text">
+              {jobs.map((job) => (
+                <tr key={job.id} className="job-row">
+                  <th scope="row">
+                    <div className="job-ident">
+                      <div className="job-poster">{job.thumbnail ? <img src={job.thumbnail} alt="" /> : <span aria-hidden="true">▶</span>}</div>
+                      <div className="job-info">
+                        <span className="job-name">{job.name}</span>
+                        <span className="job-meta">
+                          {job.duration !== undefined && <span>{timestamp(Math.round(job.duration))}</span>}
+                          <span className="mobile-size">{fileSize(job.size)}</span>
+                        </span>
+                        {job.status === "failed" && <span className="job-error">{job.error || "This video couldn’t be processed."}</span>}
+                      </div>
+                    </div>
+                  </th>
+                  <td><span className={`job-status status-${job.status}`}>{job.status}</span></td>
+                  <td className="job-size">{fileSize(job.size)}</td>
+                  <td>
+                    <div className="job-action">
+                      {job.status === "ready" && <Link href={`/watch/local/${job.id}`} aria-label={`Watch ${job.name}`}>Watch</Link>}
+                      {job.status === "failed" && <button type="button" aria-label={`Retry ${job.name}`} onClick={() => void retry(job.id)}>Retry</button>}
+                      {(job.status === "ready" || job.status === "failed") && (
+                        <button type="button" className="job-remove" aria-label={`Remove ${job.name}`} onClick={() => void remove(job)}>Remove</button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {jobs.length === 0 && (
+            <div className="queue-empty" role="status">
+              <span className="empty-glyph" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4.5" width="18" height="15" rx="2" /><path d="M7.5 4.5v15m9-15v15M3 9h4.5M3 15h4.5m9-6H21m-4.5 6H21" />
+                </svg>
+              </span>
               <h3>{loading ? "Opening your queue…" : "No videos in the queue"}</h3>
               {!loading && <p>Choose a file or process the sample to get started.</p>}
             </div>
-          </div>
-        ) : (
-          <ul className="job-list" aria-live="polite" aria-relevant="additions text">
-            {jobs.map((job) => (
-              <li key={job.id} className="job-row">
-                <div className="job-ident">
-                  <div className="job-poster">{job.thumbnail ? <img src={job.thumbnail} alt="" /> : <span aria-hidden="true">▶</span>}</div>
-                  <div className="job-info">
-                    <h3>{job.name}</h3>
-                    <p>{fileSize(job.size)}{job.duration !== undefined && ` · ${timestamp(Math.round(job.duration))}`}</p>
-                    {job.status === "failed" && <p className="job-error">{job.error || "This video couldn’t be processed."}</p>}
-                  </div>
-                </div>
-                <span className={`job-status status-${job.status}`}>{job.status}</span>
-                <div className="job-action">
-                  {job.status === "ready" && <Link href={`/watch/local/${job.id}`} aria-label={`Watch ${job.name}`}>Watch <span aria-hidden="true">→</span></Link>}
-                  {job.status === "failed" && <button type="button" aria-label={`Retry ${job.name}`} onClick={() => void retry(job.id)}>Retry</button>}
-                  {(job.status === "ready" || job.status === "failed") && (
-                    <button type="button" className="job-remove" aria-label={`Remove ${job.name}`} onClick={() => void remove(job)}>Remove</button>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+          )}
+        </div>
       </section>
     </main>
   );
