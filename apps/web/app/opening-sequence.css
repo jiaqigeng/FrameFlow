@@ -23,7 +23,7 @@
   --panel-pad: clamp(1.35rem, 4vw, 2.5rem);
   position: relative;
   width: min(100%, 26.5rem);
-  padding: calc(var(--panel-pad) + var(--brand-rest-height) + 1.5rem) var(--panel-pad) var(--panel-pad);
+  padding: calc(var(--panel-pad) + var(--brand-rest-height) + .875rem) var(--panel-pad) var(--panel-pad);
   border: 1px solid #82949269;
   border-radius: 1.25rem;
   background: linear-gradient(155deg, #1f3033, #162629 62%, #152226);
@@ -50,11 +50,7 @@
 .entry-wordmark .brand-mark { width: 1.29em; height: 1.04em; border-radius: .18em; color: #202720; }
 .entry-wordmark .play-symbol { width: .42em; height: .5em; margin-left: .07em; }
 .sign-in-form { display: grid; }
-.sign-in-form h1 {
-  text-align: center; font-size: clamp(2rem, 4vw, 2.45rem);
-  line-height: 1.1; letter-spacing: -.055em; font-weight: 610;
-}
-.sign-in-form p { margin: .55rem 0 1.65rem; color: #c0cbc8; font-size: .92rem; line-height: 1.5; text-align: center; }
+.sign-in-form p { margin: 0 0 1.65rem; color: #c0cbc8; font-size: .92rem; line-height: 1.5; text-align: center; }
 .entry-field { display: grid; gap: .43rem; }
 .entry-field + .entry-field { margin-top: 1rem; }
 .entry-field label { font-size: .89rem; font-weight: 580; color: #e7eee8; }

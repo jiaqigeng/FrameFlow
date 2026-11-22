@@ -101,7 +101,7 @@ export function SignInPage() {
             if (event.animationName === "sign-in-arrive") setPhase("ready");
           }}
         >
-          <h1 id="sign-in-title">Sign in</h1>
+          <h1 id="sign-in-title" className="sr-only">Sign in</h1>
           <p id="demo-access">Leave both fields blank to explore the demo.</p>
           {/* Unnamed inputs are excluded from both native and client-side navigation. */}
           <div className="entry-field">
