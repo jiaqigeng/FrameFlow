@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --paper: #f6f5f0;
+  --ink: #242622;
+  --muted: #565b54;
+  --line: #d2d4ca;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+.page-width {
+  width: min(100% - clamp(2rem, 9vw, 9rem), 64rem);
+  margin-inline: auto;
+}
+
+.masthead {
+  padding-block: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.25rem;
+  font-weight: 730;
+  letter-spacing: -0.06em;
+}
+
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  position: relative;
+  width: 1.85rem;
+  height: 1.55rem;
+  border-radius: 0.2rem;
+  background: #ff7449;
+}
+
+.brand-mark::before {
+  content: "";
+  width: 0.68rem;
+  height: 0.78rem;
+  margin-left: 0.1rem;
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.repo-link {
+  padding: 0.45rem 0.1rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.repo-link:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: 3px solid #b04420;
+  outline-offset: 4px;
+}
+
+.introduction {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  align-items: end;
+  gap: 2rem;
+  padding-block: clamp(2rem, 5vw, 4.1rem) clamp(1.4rem, 3vw, 2rem);
+}
+
+.category {
+  margin-bottom: 0.45rem;
+  color: #5a5d54;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5.8vw, 4.5rem);
+  font-weight: 620;
+  line-height: 1.05;
+  letter-spacing: -0.065em;
+}
+
+.synopsis {
+  justify-self: end;
+  max-width: 34ch;
+  padding-bottom: 0.15rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #191b1a;
+  border-radius: 0.5rem;
+}
+
+.clip-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  padding-block: 0.85rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.cc-mark {
+  border: 1px solid currentColor;
+  border-radius: 0.18rem;
+  padding: 0.01rem 0.13rem;
+  font: 700 0.65rem/1.1 Arial, sans-serif;
+}
+
+@media (max-width: 44rem) {
+  .introduction {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .synopsis {
+    justify-self: start;
+    max-width: 45ch;
+  }
+}

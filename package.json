@@ -1,0 +1,14 @@
+{
+  "name": "frameflow",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @frameflow/web dev",
+    "build": "pnpm --filter @frameflow/web build",
+    "start": "pnpm --filter @frameflow/web start",
+    "typecheck": "pnpm --filter @frameflow/web typecheck"
+  }
+}
