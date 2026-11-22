@@ -16,12 +16,12 @@ export default function Home() {
       <main className="page-width">
         <div className="introduction">
           <div>
-            <p className="category">Apollo 11 · July 1969</p>
-            <h1 id="clip-title">First step on the Moon</h1>
+            <p className="category">Caminandes · Film excerpt</p>
+            <h1 id="clip-title">Llamigos</h1>
           </div>
           <p className="synopsis" id="clip-description">
-            Listen to Neil Armstrong describe the powdery surface, then watch him
-            step off the lunar module onto the Moon.
+            It’s winter in Patagonia. Koro the llama and Oti the penguin both
+            have their eye on the same berry.
           </p>
         </div>
 
@@ -33,29 +33,24 @@ export default function Home() {
             controls
             playsInline
             preload="metadata"
-            poster="/media/apollo-11-first-step.jpg"
+            poster="/media/llamigos.jpg"
           >
-            <source src="/media/apollo-11-first-step.mp4" type="video/mp4" />
-            <track
-              kind="captions"
-              src="/media/apollo-11-first-step.vtt"
-              srcLang="en"
-              label="English"
-              default
-            />
-            <a href="/media/apollo-11-first-step.mp4">Download the Apollo 11 clip</a>
+            <source src="/media/llamigos.mp4" type="video/mp4" />
+            <a href="/media/llamigos.mp4">Download the Llamigos excerpt</a>
           </video>
           <figcaption className="clip-details">
             <a
               className="underline underline-offset-4"
-              href="https://commons.wikimedia.org/wiki/File:Apollo_11_Landing_-_first_steps_on_the_moon.ogv"
+              href="https://www.youtube.com/watch?v=SkVqJ1SGeL0"
             >
-              NASA footage via Wikimedia Commons
+              Original film by Blender Foundation
             </a>
-            <span className="flex items-center gap-2">
-              <span aria-hidden="true" className="cc-mark">CC</span>
-              English captions
-            </span>
+            <a
+              className="underline underline-offset-4"
+              href="https://creativecommons.org/licenses/by/3.0/"
+            >
+              Creative Commons Attribution 3.0
+            </a>
           </figcaption>
         </figure>
       </main>

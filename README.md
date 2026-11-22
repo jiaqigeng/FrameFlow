@@ -1,10 +1,10 @@
 # FrameFlow
 
-FrameFlow is a video platform in development. The local Next.js player features NASA’s **Apollo 11** recording of Neil Armstrong’s first step on the Moon. Play the clip from the beginning to hear his description of the lunar dust, or seek to **0:48** for his first words on the surface.
+FrameFlow is a video platform in development. Its local Next.js player features a 52-second excerpt from **Caminandes: Llamigos**, a colorful animated comedy set in Patagonia. A llama and a penguin’s squabble over berries turns into a runaway mine-cart ride.
 
-![FrameFlow playing and seeking through NASA’s Apollo 11 footage](docs/media/player-demo.gif)
+![FrameFlow playing and seeking through the animated short Llamigos](docs/media/player-demo.gif)
 
-NASA recorded the footage and mission audio in July 1969. Wikimedia Commons identifies the recording as public domain in the United States. The player includes a local MP4, a still from the recording, and English captions. [Footage and reuse information on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Apollo_11_Landing_-_first_steps_on_the_moon.ogv)
+Blender Foundation released the film in 2016, directed by Pablo Vazquez, with music by Torin Borrowdale and sound design by Sander Houtman. FrameFlow uses 0:49.875–1:41.792 of the film, re-encoded at 720p with brief audio fades at the cut points. The poster and player preview use frames from the same excerpt. [Original film](https://www.youtube.com/watch?v=SkVqJ1SGeL0) · [Blender’s source MP4](https://video.blender.org/download/web-videos/23f3ef79-15dc-44c5-aa45-cf92e78a4509-1080.mp4) · [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/)
 
 ## Run the player locally
 
@@ -15,7 +15,7 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open [localhost:3000](http://localhost:3000) or the address printed by Next.js. The sample video, poster, and captions are included in the repository. Playback works locally without an account or cloud services.
+Open [localhost:3000](http://localhost:3000) or the address printed by Next.js. The video and poster are included in the repository. Playback works locally without an account or cloud services.
 
 If pnpm is missing, install it with `npm install --global pnpm@11.25.0`. On Windows, `npm.cmd` and `pnpm.cmd` also work in PowerShell.
 
@@ -32,5 +32,5 @@ Run `pnpm typecheck` and `pnpm build` to check the project. Use `pnpm start` to 
 ### Understanding and searching videos
 
 - FrameFlow will transcribe spoken audio and generate a summary for each video.
-- Viewers will be able to search by meaning. FrameFlow will match a query against embeddings of timestamped transcript segments stored in PostgreSQL with pgvector. For example, “What was the lunar soil like?” could take a viewer to the moment Armstrong compares the surface to powder.
+- Viewers will be able to search by meaning. FrameFlow will match a query against embeddings of timestamped transcript segments stored in PostgreSQL with pgvector.
 - Fine-tuned machine learning models will classify videos by their content.

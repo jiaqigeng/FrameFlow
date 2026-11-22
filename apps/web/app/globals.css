@@ -125,13 +125,6 @@ h1 {
   font-size: 0.8rem;
 }
 
-.cc-mark {
-  border: 1px solid currentColor;
-  border-radius: 0.18rem;
-  padding: 0.01rem 0.13rem;
-  font: 700 0.65rem/1.1 Arial, sans-serif;
-}
-
 @media (max-width: 44rem) {
   .introduction {
     grid-template-columns: 1fr;
