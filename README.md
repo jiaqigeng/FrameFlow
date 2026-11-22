@@ -1,8 +1,10 @@
 # FrameFlow
 
-FrameFlow is a video platform in development. The first milestone is a local Next.js player for **Release recovery**, an original 40-second simulation with synthesized narration and English captions. Play the clip or seek to **0:23** to hear how the team responds when checkout errors reach 8%.
+FrameFlow is a video platform in development. The local Next.js player features NASA’s **Apollo 11** recording of Neil Armstrong’s first step on the Moon. Play the clip from the beginning to hear his description of the lunar dust, or seek to **0:48** for his first words on the surface.
 
-![FrameFlow playing and seeking through the sample video](docs/media/player-demo.gif)
+![FrameFlow playing and seeking through NASA’s Apollo 11 footage](docs/media/player-demo.gif)
+
+NASA recorded the footage and mission audio in July 1969. Wikimedia Commons identifies the recording as public domain in the United States. The player includes a local MP4, a still from the recording, and English captions. [Footage and reuse information on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Apollo_11_Landing_-_first_steps_on_the_moon.ogv)
 
 ## Run the player locally
 
@@ -30,5 +32,5 @@ Run `pnpm typecheck` and `pnpm build` to check the project. Use `pnpm start` to 
 ### Understanding and searching videos
 
 - FrameFlow will transcribe spoken audio and generate a summary for each video.
-- Viewers will be able to search by meaning. FrameFlow will match a query against embeddings of timestamped transcript segments stored in PostgreSQL with pgvector. For example, a search for “How do I roll back a release?” could take a viewer to 08:42, where the speaker explains how to restore the previous version.
+- Viewers will be able to search by meaning. FrameFlow will match a query against embeddings of timestamped transcript segments stored in PostgreSQL with pgvector. For example, “What was the lunar soil like?” could take a viewer to the moment Armstrong compares the surface to powder.
 - Fine-tuned machine learning models will classify videos by their content.

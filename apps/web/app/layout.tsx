@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Release recovery · FrameFlow",
-  description: "Watch a short, captioned engineering walkthrough in FrameFlow.",
+  title: "Apollo 11 · First step on the Moon · FrameFlow",
+  description: "Watch NASA’s Apollo 11 footage with original mission audio and English captions.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
