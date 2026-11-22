@@ -13,9 +13,10 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-1. Open [localhost:3000](http://localhost:3000) and select **Process sample**. You can also drag in your own video. The bundled sample follows the same processing path as a local file.
-2. When the queue shows **Ready**, select **Watch**. Reload the page to play the saved copy again in the same browser.
-3. Open **Library** to browse processed videos and the original sample. Search for `mine cart` and select the matching scene to jump to 0:15. The sample’s three scenes have hand-written descriptions.
+1. Open [localhost:3000](http://localhost:3000). After the filmstrip moves up, select **Sign in** to enter the demo. You can leave the fields as they are.
+2. On the dashboard, select **Process sample** or drag in your own video. The bundled sample follows the same processing path as a local file.
+3. When the queue shows **Ready**, select **Watch**. Reload the page to play the saved copy again in the same browser.
+4. Open **Library** to browse processed videos and the original sample. Search for `mine cart` and select the matching scene to jump to 0:15. The sample’s three scenes have hand-written descriptions.
 
 The demo requires no account or AWS credentials. Files you add are private to this browser’s storage for this site. A watch link for an uploaded file works only where the file is stored. Remove a job from the dashboard to delete its stored copy.
 
