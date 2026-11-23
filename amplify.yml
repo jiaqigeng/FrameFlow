@@ -1,0 +1,24 @@
+version: 1
+applications:
+  - appRoot: apps/web
+    env:
+      variables:
+        pnpm_config_node_linker: hoisted
+    frontend:
+      buildPath: /
+      phases:
+        preBuild:
+          commands:
+            - nvm install 24
+            - npm install --global pnpm@11.25.0
+            - pnpm install --frozen-lockfile
+        build:
+          commands:
+            - pnpm build:amplify
+      artifacts:
+        baseDirectory: apps/web/.amplify-hosting
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - apps/web/.next/cache/**/*

@@ -1,6 +1,6 @@
 # FrameFlow
 
-FrameFlow lets you add a video, follow its processing job, and watch the result in a library. The current dashboard runs locally. Each job reads the file’s duration and extracts a thumbnail in the browser. IndexedDB stores the original video, thumbnail, and job status between visits.
+FrameFlow lets you add a video, follow its processing job, and watch the result in a library. Each job reads the file’s duration and extracts a thumbnail in the browser. IndexedDB stores the original video, thumbnail, and job status between visits.
 
 ![Adding a video to the FrameFlow dashboard, processing it and opening the result](docs/media/player-demo.gif)
 
@@ -23,6 +23,14 @@ The demo requires no account or AWS credentials. Files you add are private to th
 If pnpm is missing, install it with `npm install --global pnpm@11.25.0`. On Windows, `npm.cmd` and `pnpm.cmd` also work in PowerShell.
 
 Run `pnpm typecheck` and `pnpm build` to check the project. Use `pnpm start` to serve the production build. GitHub Actions runs the checks for pull requests and changes to `main`.
+
+## Host the demo on AWS
+
+1. Open **Amplify** in your project's region in the [AWS Console](https://console.aws.amazon.com/). Choose **Create new app** and **GitHub**. Grant the AWS Amplify GitHub App access to `jiaqigeng/FrameFlow` and select a branch containing `amplify.yml`. The initial deployment branch is `codex/local-video-player`.
+2. Select **My app is a monorepo** and enter `apps/web` as the app root. Use the build settings from `amplify.yml` and the service role offered by Amplify for server-side rendering. Choose **Save and deploy**.
+3. When the branch shows **Deployed**, open its HTTPS domain. Check `/dashboard`, search for `mine cart` in `/library`, and play the matching scene. Subsequent pushes to the connected branch trigger a new build.
+
+Amplify serves the web pages and the bundled sample film. Visitor uploads and thumbnails stay in that visitor’s browser. For a local build of the hosting package, run `pnpm build:amplify` from the repository root. [Amplify deployment specification](https://docs.aws.amazon.com/amplify/latest/userguide/ssr-deployment-specification.html)
 
 ## Sample film
 

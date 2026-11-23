@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "pnpm --filter @frameflow/web dev",
     "build": "pnpm --filter @frameflow/web build",
+    "build:amplify": "node scripts/build-amplify.mjs",
     "start": "pnpm --filter @frameflow/web start",
     "typecheck": "pnpm --filter @frameflow/web typecheck"
   }
