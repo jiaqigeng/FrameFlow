@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    env:
+      pnpm_config_node_linker: hoisted
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v6.1.1
+        with:
+          cache: true
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm build:amplify
+      - name: Test the Amplify hosting bundle outside the checkout
+        shell: bash
+        run: |
+          bundle="$RUNNER_TEMP/frameflow-hosting"
+          mv apps/web/.amplify-hosting "$bundle"
+          diff -qr apps/web/public/media "$bundle/static/media"
+          diff -qr apps/web/.next/static "$bundle/static/_next/static"
+
+          entry=$(jq -er '.computeResources[] | select(.name == "default") | .entrypoint' "$bundle/deploy-manifest.json")
+          (cd "$bundle/compute/default" && exec env PORT=3000 node "$entry") &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+
+          origin=http://127.0.0.1:3000
+          curl --fail --silent --show-error --retry 15 --retry-connrefused --retry-delay 1 "$origin/" --output /dev/null
+          curl --fail --silent --show-error "$origin/library?q=mine%20cart" --output "$RUNNER_TEMP/library.html"
+          grep -Fq 'href="/watch/llamigos?t=15"' "$RUNNER_TEMP/library.html"
+          curl --fail --silent --show-error "$origin/library?q=no-matching-scene" --output "$RUNNER_TEMP/empty.html"
+          grep -Fq '>No matches<' "$RUNNER_TEMP/empty.html"
+          curl --fail --silent --show-error "$origin/watch/llamigos?t=15" --output "$RUNNER_TEMP/watch.html"
+          grep -Fq 'src="/media/llamigos.mp4#t=15"' "$RUNNER_TEMP/watch.html"

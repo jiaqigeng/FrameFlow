@@ -1,0 +1,232 @@
+.sign-in-page {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: clamp(1rem, 4vw, 3rem);
+  overflow: clip;
+  color-scheme: dark;
+  color: #f3f5ee;
+  background: linear-gradient(180deg, #0c1c2566, #10252d51 50%, #06161caa),
+    url("/media/llamigos-landscape.webp") center 56% / cover, #283f43;
+  --entry-duration: 2.05s;
+  --brand-rest-height: 1.85rem;
+  --brand-start-scale: 2.1;
+  --brand-start-offset: clamp(2.5rem, 7vw, 5.2rem);
+  --brand-gap: clamp(1rem, 2.4vw, 1.65rem);
+}
+
+/* The panel and curtain share a center. Positioning the mark against the panel
+   lets one element travel between both layouts, even as the viewport changes. */
+.entry-panel {
+  --panel-pad: clamp(1.35rem, 4vw, 2.5rem);
+  position: relative;
+  width: min(100%, 26.5rem);
+  padding: calc(var(--panel-pad) + var(--brand-rest-height) + .875rem) var(--panel-pad) var(--panel-pad);
+  border: 1px solid #82949269;
+  border-radius: 1.25rem;
+  background: linear-gradient(155deg, #1f3033, #162629 62%, #152226);
+  box-shadow: 0 1.75rem 5rem #06111444, 0 3px 12px #08131830;
+}
+.entry-wordmark {
+  position: absolute;
+  z-index: 3;
+  top: var(--panel-pad);
+  left: 50%;
+  display: flex;
+  width: max-content;
+  height: var(--brand-rest-height);
+  align-items: center;
+  gap: .36em;
+  color: #f3f5ee;
+  font-size: 1.38rem;
+  font-weight: 700;
+  letter-spacing: -.06em;
+  line-height: 1;
+  transform: translate(-50%, 0);
+  pointer-events: none;
+}
+.entry-wordmark .brand-mark { width: 1.29em; height: 1.04em; border-radius: .18em; color: #202720; }
+.entry-wordmark .play-symbol { width: .42em; height: .5em; margin-left: .07em; }
+.sign-in-form { display: grid; }
+.sign-in-form p { margin: 0 0 1.65rem; color: #c0cbc8; font-size: .92rem; line-height: 1.5; text-align: center; }
+.entry-field { display: grid; gap: .43rem; }
+.entry-field + .entry-field { margin-top: 1rem; }
+.entry-field label { font-size: .89rem; font-weight: 580; color: #e7eee8; }
+.sign-in-form input {
+  width: 100%; min-width: 0; min-height: 3rem; padding: .64rem .88rem;
+  border: 1px solid #748581; border-radius: .55rem; background: #132124; color: #f3f5ee;
+  font: inherit; font-size: 1rem;
+}
+.sign-in-form input::placeholder { color: #a7b5b0; opacity: 1; }
+.sign-in-page :is(input, button):focus-visible { outline: 3px solid #ffc09c; outline-offset: 3px; }
+.entry-password { position: relative; }
+.entry-password input { padding-right: 4.4rem; }
+.password-toggle {
+  position: absolute; top: 50%; right: .3rem; transform: translateY(-50%);
+  min-width: 3.5rem; min-height: 44px; border-radius: .4rem; color: #d4dfd9;
+  font-size: .83rem; font-weight: 600; cursor: pointer;
+}
+.password-toggle:hover { text-decoration: underline; text-underline-offset: .2rem; }
+.entry-submit {
+  display: flex; align-items: center; justify-content: center; gap: .55rem;
+  margin-top: 1.5rem; min-height: 3.1rem; border-radius: .55rem;
+  background: #ff986e; color: #231c17; font-size: .97rem; font-weight: 680; cursor: pointer;
+}
+.entry-submit:hover { background: #ffab88; }
+.entry-submit:active { background: #ff8c5e; }
+.entry-arrow { font-size: 1.15em; line-height: 1; }
+@media (scripting: none) {
+  .password-toggle { display: none; }
+  .entry-password input { padding-right: .88rem; }
+}
+
+.opening-sequence {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 1.5rem;
+  border: 0;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  color: #f7f7f2;
+  background: radial-gradient(ellipse at 50% 43%, #2c3832 0%, #18201c 54%, #151b18 100%);
+}
+
+.sign-in-page[data-phase="playing"] .opening-sequence { display: grid; animation: opening-lift var(--entry-duration) both; }
+.sign-in-page[data-phase="playing"] .entry-wordmark { animation: wordmark-dock var(--entry-duration) both; }
+.sign-in-page[data-phase="playing"] .sign-in-form { animation: sign-in-arrive var(--entry-duration) both; }
+/* The server-rendered entry starts on the reel. If JS is slow, release the form. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .sign-in-page[data-phase="preparing"] .opening-sequence { display: grid; animation: opening-prepare .6s step-end both; }
+  .sign-in-page[data-phase="preparing"] .sign-in-form { animation: sign-in-prepare .6s step-end both; }
+  .sign-in-page[data-phase="preparing"] .entry-wordmark { animation: wordmark-prepare .6s step-end both; }
+  .sign-in-page[data-phase="preparing"] .opening-stage *,
+  .sign-in-page[data-phase="preparing"] .opening-strip::after { animation-play-state: paused; }
+}
+.opening-stage {
+  position: absolute; left: 50%; top: calc(50% + var(--brand-start-offset));
+  width: min(42rem, calc(100% - 3rem));
+  padding-bottom: calc(var(--brand-gap) + var(--brand-rest-height) * var(--brand-start-scale) / 2);
+  transform: translate(-50%, -100%);
+}
+
+.opening-strip {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.25rem, 1vw, .65rem);
+  padding-block: .8rem 1rem;
+  isolation: isolate;
+}
+
+.opening-strip::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: .3rem;
+  border-top: 1px solid #8a968a;
+  background: repeating-linear-gradient(90deg, #9da99b 0 1px, transparent 1px .65rem);
+  animation: opening-ruler .55s .3s both;
+  transform-origin: left;
+}
+
+.opening-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: .35rem;
+  background: #35473d;
+  animation: opening-deal .6s cubic-bezier(.18,.74,.2,1) both;
+}
+
+.opening-frame:nth-child(1) { --start-x: calc(100% + clamp(.25rem, 1vw, .65rem)); z-index: 2; animation-delay: .14s; }
+.opening-frame:nth-child(2) { animation: opening-bank .48s .27s both; }
+.opening-frame:nth-child(3) { --start-x: calc(-100% - clamp(.25rem, 1vw, .65rem)); animation-delay: .23s; }
+.opening-frame img { width: 100%; height: 100%; object-fit: cover; }
+.opening-frame span {
+  position: absolute;
+  bottom: .35rem;
+  left: .35rem;
+  padding: .1rem .32rem;
+  border-radius: .18rem;
+  color: white;
+  background: #101714df;
+  font: 600 clamp(.61rem, 1.5vw, .76rem)/1.4 ui-monospace, monospace;
+}
+
+.opening-playhead {
+  position: absolute;
+  z-index: 3;
+  top: .2rem;
+  bottom: -.15rem;
+  width: 2px;
+  background: var(--accent);
+  animation: opening-scrub .72s .4s cubic-bezier(.3,.65,.25,1) both;
+}
+
+.opening-playhead::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: .65rem;
+  height: .55rem;
+  background: var(--accent);
+  transform: translateX(-50%);
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 50% 100%, 0 40%);
+}
+
+.opening-skip {
+  position: absolute;
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  min-height: 44px;
+  padding: .5rem .9rem;
+  border: 1px solid #859085;
+  border-radius: 2rem;
+  color: #f7f7f2;
+  font-size: .85rem;
+  cursor: pointer;
+}
+
+.opening-skip span { margin-left: .3rem; }
+.opening-skip:hover { background: #344038; }
+.opening-skip:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@keyframes opening-deal { from { transform: translateX(var(--start-x)) scale(.93); } to { transform: none; } }
+@keyframes opening-bank { from { opacity: 0; transform: translateY(.35rem); } to { opacity: 1; transform: none; } }
+@keyframes opening-ruler { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes opening-scrub { 0% { left: 1%; opacity: 0; } 12% { opacity: 1; } 100% { left: 97%; opacity: 1; } }
+@keyframes opening-prepare { from { visibility: visible; } to { visibility: hidden; } }
+@keyframes sign-in-prepare { from { visibility: hidden; } to { visibility: visible; } }
+@keyframes wordmark-prepare {
+  from { top: calc(50% + var(--brand-start-offset)); transform: translate(-50%, -50%) scale(var(--brand-start-scale)); }
+  to { top: var(--panel-pad); transform: translate(-50%, 0); }
+}
+@keyframes wordmark-dock {
+  0%, 58% {
+    top: calc(50% + var(--brand-start-offset));
+    transform: translate(-50%, -50%) scale(var(--brand-start-scale));
+    animation-timing-function: cubic-bezier(.48,0,.23,1);
+  }
+  92%, 100% { top: var(--panel-pad); transform: translate(-50%, 0); }
+}
+@keyframes opening-lift {
+  0%, 58% { transform: translateY(0); animation-timing-function: cubic-bezier(.62,.02,.38,1); }
+  83%, 100% { transform: translateY(-101%); }
+}
+@keyframes sign-in-arrive { 0%, 82% { opacity: 0; } 100% { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sign-in-page[data-phase="playing"] .opening-sequence { display: none; }
+  .sign-in-page[data-phase="playing"] :is(.sign-in-form, .entry-wordmark) { animation: none; }
+}
+@media (max-width: 32rem) { .sign-in-page { --brand-start-scale: 1.65; } }
